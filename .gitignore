@@ -20,6 +20,12 @@
 /.classpath
 /.settings
 /.project
+/target
+/common/target
+/dataaccess/target
+/service/target
+/web/target
+
 
 
 

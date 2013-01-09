@@ -36,13 +36,6 @@
 	
 	</plugins>
   </build>
-
-	<scm>
-    	<connection>scm:svn:file:///E:/pankajsPCDir/nayidishaSVNRepo/TwitterAround</connection>
-    	<url>file:///E:/pankajsPCDir/nayidishaSVNRepo/TwitterAround</url>
-    	<developerConnection>scm:svn:file:///E:/pankajsPCDir/nayidishaSVNRepo/TwitterAround</developerConnection>
-	</scm>
-	
 <dependencyManagement>
   <dependencies>
       
