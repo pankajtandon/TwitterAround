@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nayidisha.twitter.domain.TwitterFollower" table="twitter_follower">
+	    <composite-id>
+			<key-property name="followeeId" column="followee_id" />
+			<key-property name="followerId" column="follower_id" />
+		</composite-id>
+		<property name="followStartDate"  column="follow_start_date"/>	
+		<property name="followEndDate"  column="follow_end_date"/>		
+	</class>
+</hibernate-mapping>

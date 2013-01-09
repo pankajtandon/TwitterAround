@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nayidisha.twitter.domain.Dashboard" table="dashboard">
+		<id name="id" column="ID" />
+		<property name="sendTweetTest"  column="send_tweet_test"/>
+		<property name="followTest"  column="follow_test"/>
+
+		
+		<property name="createdDate" type="timestamp" column="created_date"/>
+		<property name="updatedDate" type="timestamp" column="updated_date"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="updatedBy" type="string" column="updated_by"/> 	
+		
+	</class>
+</hibernate-mapping>

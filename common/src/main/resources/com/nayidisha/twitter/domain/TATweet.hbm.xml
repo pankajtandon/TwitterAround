@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nayidisha.twitter.domain.TATweet" table="ta_tweet">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="description"  column="description"/>
+		<property name="fromUser"  column="from_user"/>
+		<property name="toUser"  column="to_user"/>
+		<property name="weight"  column="weight"/>
+		<property name="lastSentDate"  column="last_sent"/>
+		
+		<property name="createdDate" type="timestamp" column="created_date"/>
+		<property name="updatedDate" type="timestamp" column="updated_date"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="updatedBy" type="string" column="updated_by"/> 	
+		
+		<set name="associatedCampaigns" inverse="true" table="tweet_campaign" lazy="false">
+       		<key column="tweet_id"/>
+       		<many-to-many column="campaign_id" class="com.nayidisha.twitter.domain.Campaign"/>
+		</set>			
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,34 @@
+/* common to all columns*/
+.idColumn, .nameColumn, .envColumn{
+    border-right: 1px solid #666666;
+    border-bottom: 1px solid #666666;
+}
+
+.idColumn{
+    width: 80px;
+}
+
+.nameColumn{
+    width: 225px;
+}
+
+.envColumn{
+    width: 150px;
+}
+
+.tableStyle{
+    border: 1px solid #666666;
+}
+.panelBorder{
+    border: 1px solid #666666;
+}
+.oddRow{
+    background-color: #C0C0C0;
+}
+
+.evenRow{
+    background-color: #CCCCFF;
+}
+
+
+

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nayidisha.twitter.domain.TweetsSent" table="tweets_sent">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="campaignId"  column="campaign_id"/>
+		<property name="targetTwitterId" column="target_twitter_id"/>
+		<property name="tweetId" column="tweet_id"/>
+		<property name="sentOn" column="sent_on"/>
+		<property name="testOnly" column="test_only"/>
+	</class>
+</hibernate-mapping>

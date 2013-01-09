@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nayidisha.twitter.domain.TAUser" table="ta_user">
+		<id name="id" column="id" />
+		<property name="email"  column="email"/>
+		<property name="firstName" column="first_name"/>
+		<property name="lastName" column="last_name"/>
+		<property name="middleName"  column="middle_name"/>
+		
+		<property name="createdDate" type="timestamp" column="created_date"/>
+		<property name="updatedDate" type="timestamp" column="updated_date"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="updatedBy" type="string" column="updated_by"/>
+		
+		<set name="associatedCampaigns" inverse="true" cascade = "all-delete-orphan" >
+			<key column="OWNER" />
+			<one-to-many  class="com.nayidisha.twitter.domain.Campaign" /> 
+		</set>
+		
+		
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+ <ice:panelGrid columns="2" cellspacing="0" cellpadding="0">
+    <ice:panelGroup style="background:#f16e28; border:1px solid #999999;">
+        <ice:selectBooleanCheckbox id="id1" required="false" immediate="true" 
+                  valueChangeListener="#{controllerBean.fooChanged}"                             
+				  value="#{controllerBean.checkboxStates['id1']}"
+                                   autocomplete="off"/>
+        <ice:outputLabel value="HADT" style="margin-right:7px;"/>
+    </ice:panelGroup>
+ 
+    <ice:panelGroup
+            style="background: #9566b6; border:1px solid #999999;">
+        <ice:selectBooleanCheckbox id="id2" required="false" immediate="true"                                
+				valueChangeListener="#{controllerBean.fooChanged}"                                   
+				value="#{controllerBean.checkboxStates['id2']}"
+                                   autocomplete="off"/>
+        <ice:outputLabel value="AKST" style="margin-right:7px;"/>
+    </ice:panelGroup>
+ </ice:panelGrid>

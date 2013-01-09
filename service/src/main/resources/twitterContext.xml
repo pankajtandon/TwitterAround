@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/util 
+       http://www.springframework.org/schema/util/spring-util-2.0.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       ">
+
+
+  <bean id="twitterService" class="com.nayidisha.twitter.service.TwitterServiceImpl">
+  	<constructor-arg type="java.lang.String" index="0"><value>${twitterUserId}</value></constructor-arg> 
+  	<constructor-arg type="java.lang.String" index="1"><value>${twitterPassword}</value></constructor-arg>
+  	<constructor-arg type="java.lang.String" index="2"><value>${httpProxy}</value></constructor-arg> 
+  	<constructor-arg type="java.lang.String" index="3"><value>${httpProxyPort}</value></constructor-arg> 
+  	  	
+  	<property name="twitterDAO">
+		<ref bean="twitterDAO" />
+    </property>
+	<property name="campaignService">
+	    <ref bean="campaignService" />
+	</property>     
+  </bean>
+  
+  <bean id="campaignService" class="com.nayidisha.twitter.service.CampaignServiceImpl">  	
+  	<property name="campaignDAO">
+		<ref bean="campaignDAO" />
+    </property>
+  </bean>
+  
+  <bean id="schedulerService" class="com.nayidisha.twitter.service.SchedulerServiceImpl">  	
+  	<property name="quartzScheduler">
+		<ref bean="quartzScheduler" />
+    </property>
+	<property name="campaignService">
+	    <ref bean="campaignService" />
+	</property>    
+  </bean>
+  	
+  	
+  <bean id="quartzScheduler" 
+		 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">	
+	   <property name="target" ref="quartzSchedulerUnAdorned"/>
+	   <property name="transactionManager" ref="jdbcTxManager"/>
+	   <property name="transactionAttributes">
+	     <props>
+	         <prop key="*">PROPAGATION_REQUIRED</prop>
+	     </props>
+	   </property> 
+	</bean>
+	  	
+	<bean id="quartzSchedulerUnAdorned" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false">
+		<property name="dataSource">
+			<ref bean="myC3P0DataSource"/>
+		</property>	
+		<property name="autoStartup"><value>true</value></property>
+		<property name="applicationContextSchedulerContextKey"><value>applicationContext</value></property>
+		<property name="waitForJobsToCompleteOnShutdown"><value>true</value></property>
+		<property name="quartzProperties">
+			<props>
+			<!-- ThreadPool -->
+			<prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+			<prop key="org.quartz.threadPool.threadCount">5</prop>
+			<prop key="org.quartz.threadPool.threadPriority">5</prop>
+			<!-- Job store -->
+			<prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+			<prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop>
+			<prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.StdJDBCDelegate</prop>
+			
+			<prop key="org.quartz.jobStore.selectWithLockSQL">SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ?</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!--
+
+    This is not working because these jobs are passed to the Enum (NDJobs) and there I cannot seem to get 
+    a Spring managed bean
+    <bean id="getTwitterersJob" class="com.nayidisha.twitter.jobs.GetTwitterersJob">  	
+  	    <property name="twitterService">
+		    <ref bean="twitterService" />
+        </property>
+    </bean>
+  
+    <bean id="sendTweetsJob" class="com.nayidisha.twitter.jobs.SendTweetsJob">  	
+  	    <property name="twitterService">
+		    <ref bean="twitterService" />
+        </property>
+    </bean>  
+  
+  -->
+  
+  
+  <bean id="twitterDAO" class="com.nayidisha.twitter.dataaccess.TwitterHibernateDAO">
+    <property name="sessionFactory" ref="mySessionFactory"/>
+  </bean>
+  <bean id="campaignDAO" class="com.nayidisha.twitter.dataaccess.CampaignHibernateDAO">
+    <property name="sessionFactory" ref="mySessionFactory"/>
+  </bean>
+  
+  <bean id="hibernateTxManager" name="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory" ref="mySessionFactory"/>
+  </bean>
+
+	<bean id="jdbcTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	  <property name="dataSource" ref="myC3P0DataSource"/>
+	</bean>
+
+  <aop:config>
+    <aop:pointcut id="serviceMethods" expression="execution(public * com.nayidisha.twitter.service.*.*(..))"/>
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/><!--
+
+  
+    <aop:advisor 
+      pointcut="com.nayidisha.twitter.service.CampaignServiceImpl()"
+      advice-ref="tx-advice"/>
+    <aop:advisor 
+      pointcut="com.nayidisha.twitter.service.SchedulerServiceImpl()"
+      advice-ref="tx-advice"/>
+    <aop:advisor 
+      pointcut="com.nayidisha.twitter.service.TwitterServiceImpl()"
+      advice-ref="tx-advice"/>       
+  --></aop:config>
+
+  <tx:advice id="txAdvice" transaction-manager="hibernateTxManager">
+    <tx:attributes>
+      <!-- CampaignService -->
+      <tx:method name="add*" propagation="REQUIRED"/>
+      <tx:method name="update*" propagation="REQUIRED"/>
+      <tx:method name="delete*" propagation="REQUIRED"/>
+      <tx:method name="storeTargetTwitterers" propagation="REQUIRED"/>
+      <tx:method name="storeTweetsSent" propagation="REQUIRED"/>
+
+      
+      <!-- Added transactional context to ALL service methods that 
+           the scheduler calls because of this issue I faced
+           http://forums.mysql.com/read.php?39,180347,277682#msg-277682
+           and the explanation in the Spring javadoc here:
+           http://static.springsource.org/spring/docs/1.2.x/api/org/springframework/scheduling/quartz/SchedulerFactoryBean.html#setDataSource(javax.sql.DataSource) 
+       -->
+      <!-- SchedulerService       -->
+      <tx:method name="showJobs" propagation="REQUIRED"/>
+      <tx:method name="startJob" propagation="REQUIRED"/>
+      <tx:method name="stopJob" propagation="REQUIRED"/>
+      
+      <!-- TwitterService -->
+      <tx:method name="getTwitterersForACampaign" propagation="SUPPORTS"/>
+      <tx:method name="sendEarliestTweetToEarliestTwitterer" propagation="SUPPORTS"/>    
+      
+      <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
+    </tx:attributes>
+  </tx:advice>
+
+  <bean id="myDataSource" name="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" >
+    	<value>${db.driver.class}</value>
+    </property>
+    <property name="url" >
+    	<value>${db.connection.url}</value>
+    </property>
+    <property name="username" >
+    	<value>${db.user}</value>
+    </property>
+    <property name="password" >
+    	<value>${db.password}</value>
+    </property>    
+
+    <property name="testOnBorrow" >
+    	<value>true</value>
+    </property> 
+
+    <property name="validationQuery" >
+    	<value>SELECT 1</value>
+    </property> 
+    
+  </bean>
+  
+  <bean id="myC3P0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
+        destroy-method="close">
+        <property name="driverClass">
+            <value>${db.driver.class}</value>
+        </property>
+        <property name="jdbcUrl">
+            <value>${db.connection.url}</value>
+        </property>
+         
+        
+        <property name="properties">
+            <props>
+                <prop key="c3p0.acquire_increment">5</prop>
+                <prop key="c3p0.idle_test_period">100</prop>
+                <prop key="c3p0.max_size">100</prop>
+                <prop key="c3p0.max_statements">0</prop>
+                <prop key="c3p0.min_size">10</prop>
+                <prop key="c3p0.testConnectionsOnCheckout">true</prop>
+                <prop key="c3p0.preferredTestQuery">SELECT 1</prop>
+                <prop key="user">${db.user}</prop>
+                <prop key="password">${db.password}</prop>
+            </props>
+        </property>
+    </bean>
+    
+
+    <util:list id="twitterMappingResources">
+        	<value>com/nayidisha/twitter/domain/Campaign.hbm.xml</value>
+        	<value>com/nayidisha/twitter/domain/TAUser.hbm.xml</value>
+        	<value>com/nayidisha/twitter/domain/TATweet.hbm.xml</value>
+        	<value>com/nayidisha/twitter/domain/TwitterUser.hbm.xml</value>
+        	<value>com/nayidisha/twitter/domain/TweetsSent.hbm.xml</value>
+        	<value>com/nayidisha/twitter/domain/Dashboard.hbm.xml</value>
+        	<value>com/nayidisha/twitter/domain/TwitterFollower.hbm.xml</value>
+        	<value>com/nayidisha/twitter/domain/TAOAuthToken.hbm.xml</value>
+	</util:list>
+	
+	<bean id="mappingResources"
+		class="org.springframework.beans.factory.config.ListFactoryBean"
+		parent="twitterMappingResources" >
+		<property name="sourceList">
+			<list merge="true">
+			</list>
+		</property>
+	</bean>	
+	
+
+  <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="dataSource" ref="myDataSource"/>
+    <property name="mappingResources">
+		<ref bean="mappingResources" />
+    </property>
+    <property name="hibernateProperties">
+      <value>
+        hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+        hibernate.show_sql=false
+      </value>
+    </property>
+    <property name="entityInterceptor" ref="auditInterceptor" />
+  </bean>
+
+
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:service.properties</value>
+				<!--  used for Unit Tests -->
+			</list>
+		</property>
+		<!-- check sys prop first and then those in common.prpoerties -->
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" /> 
+		<property name="ignoreResourceNotFound" value="true" />
+	</bean>
+	<bean id="auditInterceptor" class="com.nayidisha.twitter.interceptor.AuditableInterceptor" />
+
+</beans>

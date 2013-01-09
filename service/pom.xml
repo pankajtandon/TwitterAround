@@ -1,0 +1,101 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.nayidisha.twitter</groupId>
+  <artifactId>service</artifactId>
+  <packaging>jar</packaging>
+  <version>1.2.0</version>
+  <name>service</name>
+
+  <url>http://maven.apache.org</url>
+  
+  <parent>
+    <groupId>com.nayidisha.twitter</groupId>
+    <artifactId>TwitterAround</artifactId>
+    <version>1.2.0</version>
+  </parent>
+  
+  <build>
+       <resources>
+         <resource>
+          <directory>
+              src/main/resources
+          </directory>
+          <filtering>true</filtering>
+         </resource>        
+      </resources> 
+      <testResources>
+        <testResource>
+          <directory>
+               src/test/resources
+          </directory>
+          <filtering>true</filtering>
+        </testResource>
+      </testResources>
+  </build>
+  <dependencies>
+  
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>dataaccess</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+
+	    <dependency>
+	      <groupId>org.springframework.security</groupId>
+	      <artifactId>spring-security-core</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-aop</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-beans</artifactId>
+	    </dependency>
+	    
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-context</artifactId>
+		</dependency>	
+		
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-context-support</artifactId>
+		</dependency>		    
+	    
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-test</artifactId>
+	    </dependency>
+
+		<dependency>
+		  <groupId>commons-dbcp</groupId>
+		  <artifactId>commons-dbcp</artifactId>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-orm</artifactId>
+		</dependency>	
+		
+		<dependency>
+		  <groupId>c3p0</groupId>
+		  <artifactId>c3p0</artifactId>
+		</dependency>		
+		
+<!-- 	    <dependency>
+	      <groupId>mysql</groupId>
+	      <artifactId>mysql-driver</artifactId>
+	      <scope>provided</scope>
+	    </dependency> -->
+	    
+	    <dependency>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	    </dependency>
+    	    
+  </dependencies>
+
+</project>

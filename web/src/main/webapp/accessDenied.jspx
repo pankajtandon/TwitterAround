@@ -1,0 +1,18 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" version="2.0">
+<head>
+    <title>Spring Security Access Denied</title>
+</head>
+<body>
+<f:view>
+    <h:form id="form">
+        <h:panelGrid id="grid" columns="1">
+            <h:outputText id="output1"
+                          value="Access denied."/>
+        </h:panelGrid>
+        <h:commandLink value="Return to Login Page" action="login"/>
+    </h:form>
+</f:view>
+</body>
+</html>

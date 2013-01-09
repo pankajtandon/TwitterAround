@@ -1,0 +1,680 @@
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	>
+ 
+	<html>
+ 
+		<head><title>Twitter Around</title>
+		<link href="../css/menuStyle.css" rel="stylesheet" type="text/css"/>
+        <link href="../xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css"/>
+        <link href="../css/style.css" rel="stylesheet" type="text/css"/>		
+        <script language="javascript">
+		function changeLinkColor(color, id) { 
+	    	if (!document.getElementById(id)) {
+	        	if (id) {
+	           		id.style.color = color;
+	        	}
+	    	} else {
+	     		document.getElementById(id).style.color = color;
+	     	}
+	     	return true;
+		}        
+		</script>
+		
+		</head>
+ 
+		<body>
+ 
+			<!--<ice:outputStyle href="/css/rime.css"></ice:outputStyle>-->
+ 			<a href="../logout.jsp">logout</a>	
+			<ice:form partialSubmit="true">
+				
+
+				<ice:panelBorder rendered="true" width="900px;" style="padding: 0px; margin: 0px" >
+
+				<f:facet name="north" style="padding: 0px; margin: 0px">
+					<b><ice:outputText value="Twitter Around Application " onmouseovereffect="#{twitterBean.funEffect}"/></b>
+				</f:facet >			
+				<f:facet name="center">
+				<ice:panelGrid columns="1"  >
+					<ice:panelDivider orientation="horizontal" dividerPosition="45" styleClass="icePnlDvrHor" style="border: 0px; width: 900px; height: 700px" bgcolor="#FF11AA">
+			<!-- ==================== -->		   
+			<!--    Top panel  -->		   
+			<!-- ==================== -->
+								
+					   <f:facet name="first">
+					   
+					   <ice:panelTabSet partalSubmit="true" tabChangeListener="#{campaignBean.processTabChange}">
+					   
+		<!--  ============== -->			
+		<!--  Campaign tab -->
+		<!--  ============== -->
+							   
+							        <ice:panelTab id="tabCampaigns" label="Campaigns">
+							        
+						<ice:panelGroup style="padding:6px;"  >
+						
+
+				<ice:panelGroup>
+                <!-- Paginator with page controls -->
+                <ice:dataPaginator id="dataScroll1"
+                                   for="campaignViewList"
+                                   paginator="true"
+                                   fastStep="3"
+                                   paginatorMaxPages="20">
+                    <f:facet name="first">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-first.gif"
+                            style="border:none;"
+                            title="First Page"/>
+                    </f:facet>
+                    <f:facet name="last">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-last.gif"
+                            style="border:none;"
+                            title="Last Page"/>
+                    </f:facet>
+                    <f:facet name="previous">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-previous.gif"
+                            style="border:none;"
+                            title="Previous Page"/>
+                    </f:facet>
+                    <f:facet name="next">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-next.gif"
+                            style="border:none;"
+                            title="Next Page"/>
+                    </f:facet>
+                    <f:facet name="fastforward">
+                        <ice:graphicImage url="../xmlhttp/css/xp/css-images/arrow-ff.gif"
+                                          style="border:none;"
+                                          title="Fast Forward"/>
+                    </f:facet>
+                    <f:facet name="fastrewind">
+                        <ice:graphicImage url="../xmlhttp/css/xp/css-images/arrow-fr.gif"
+                                          style="border:none;"
+                                          title="Fast Backwards"/>
+                    </f:facet>
+                </ice:dataPaginator>
+                
+                
+			    <ice:dataPaginator id="dataScroll2"  for="campaignViewList"
+			            rowsCountVar="rowsCount"
+			            displayedRowsCountVar="displayedRowsCount"
+			            firstRowIndexVar="firstRowIndex"
+			            lastRowIndexVar="lastRowIndex"
+			            pageCountVar="pageCount"
+			            pageIndexVar="pageIndex">
+			        <ice:outputFormat
+			                styleClass="standard"
+			                value="{0} campaigns found, displaying {1} campaign(s), from {2} to {3}. Page {4} / {5}.">
+			            <f:param value="#{rowsCount}"/>
+			            <f:param value="#{displayedRowsCount}"/>
+			            <f:param value="#{firstRowIndex}"/>
+			            <f:param value="#{lastRowIndex}"/>
+			            <f:param value="#{pageIndex}"/>
+			            <f:param value="#{pageCount}"/>
+			        </ice:outputFormat>
+			    </ice:dataPaginator>
+			<ice:panelGroup >    
+		    	<ice:commandButton value="Add a New Campaign" actionListener="#{campaignBean.createNewCampaign}" />
+		    </ice:panelGroup>
+		    	                    
+        <ice:dataTable frame="box"
+        			   id="campaignViewList"
+                	   columnClasses="idColumn, nameColumn"
+                       rowClasses="oddRow, evenRow"  
+                       styleClass="tableStyle"      
+                       binding="#{campaignBean.campaignDataTable}"			   
+                       var="campaign"
+                       rows="5"
+                       value="#{campaignBean.campaignViewList}" rules="all" width="900px" >
+            <f:facet name="header">
+                <ice:outputText value="Campaign Lists"/>
+            </f:facet>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="CampaignId"/>
+                </f:facet>
+                <ice:outputText value="#{campaign.id}"/>
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Name"/>
+                </f:facet>
+                <ice:commandButton
+                                value=" #{campaign.name} "
+                                id="campaignId"
+                                actionListener="#{campaignBean.setSelectedCampaign}"
+                                title="Click for working on this campaign"
+                                partialSubmit="true"
+                                >
+                </ice:commandButton>                
+                
+                
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Delete?"/>
+                </f:facet>
+                <!-- 
+	            <ice:selectBooleanCheckbox id="deleteCampaign" required="false" immediate="false" 
+	                  valueChangeListener="#{campaignBean.deleteCampaign}"                             
+					  value="#{campaignBean.deleteCheckboxStates['x']}"
+	                                   autocomplete="off"/>
+	            <ice:selectBooleanCheckbox id="withTweets" required="false" immediate="false"
+	                  title="with tweets" 
+	                  valueChangeListener="#{campaignBean.deleteCampaign}"                             
+					  value="#{campaignBean.deleteCheckboxStates['y']}"
+	                                  autocomplete="off"/> 	        
+				-->  	                                                                              
+            </ice:column>   
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Name"/>
+                </f:facet>
+                <ice:outputText value="#{campaign.name}"/> 
+            </ice:column>
+            
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Status"/>
+                </f:facet>
+                <ice:outputText value="#{campaign.name}"/>
+            </ice:column> 
+            <!-- 
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Stop"/>
+                </f:facet>
+            <ice:selectBooleanCheckbox id="id3" required="false" immediate="true" 
+                  valueChangeListener="#{controllerBean.fooChanged}"                             
+				  value="#{controllerBean.checkboxStates['id3']}"
+                                   autocomplete="off"/> 
+            </ice:column>  
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Start"/>
+                </f:facet>
+            <ice:selectBooleanCheckbox id="id4" required="false" immediate="true" 
+                  valueChangeListener="#{controllerBean.fooChanged}"                             
+				  value="#{controllerBean.checkboxStates['id4']}"
+                                   autocomplete="off"/> 
+            </ice:column>  
+         -->
+         </ice:dataTable> 
+         </ice:panelGroup>
+ 
+                
+
+						 
+
+						 		    						
+						
+						
+						</ice:panelGroup>
+
+					</ice:panelTab>
+					
+					
+					
+		<!--  ============== -->			
+		<!--  TWEETS tab -->
+		<!--  ============== -->
+					<ice:panelTab id="tabTweets" label="Tweets" rendered="#{tweetBean.hasCurrentCampaign}">
+					<ice:panelGroup style="padding:6px;"  >
+					
+					
+					
+				<ice:panelGroup>
+                <!-- Paginator with page controls -->
+                <ice:dataPaginator id="dataScroll3"
+                                   for="tweetViewList"
+                                   paginator="true"
+                                   fastStep="3"
+                                   paginatorMaxPages="20">
+                    <f:facet name="first">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-first.gif"
+                            style="border:none;"
+                            title="First Page"/>
+                    </f:facet>
+                    <f:facet name="last">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-last.gif"
+                            style="border:none;"
+                            title="Last Page"/>
+                    </f:facet>
+                    <f:facet name="previous">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-previous.gif"
+                            style="border:none;"
+                            title="Previous Page"/>
+                    </f:facet>
+                    <f:facet name="next">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-next.gif"
+                            style="border:none;"
+                            title="Next Page"/>
+                    </f:facet>
+                    <f:facet name="fastforward">
+                        <ice:graphicImage url="../xmlhttp/css/xp/css-images/arrow-ff.gif"
+                                          style="border:none;"
+                                          title="Fast Forward"/>
+                    </f:facet>
+                    <f:facet name="fastrewind">
+                        <ice:graphicImage url="../xmlhttp/css/xp/css-images/arrow-fr.gif"
+                                          style="border:none;"
+                                          title="Fast Backwards"/>
+                    </f:facet>
+                </ice:dataPaginator>
+                
+                
+			    <ice:dataPaginator id="dataScroll4"  for="tweetViewList"
+			            rowsCountVar="rowsCount"
+			            displayedRowsCountVar="displayedRowsCount"
+			            firstRowIndexVar="firstRowIndex"
+			            lastRowIndexVar="lastRowIndex"
+			            pageCountVar="pageCount"
+			            pageIndexVar="pageIndex">
+			        <ice:outputFormat
+			                styleClass="standard"
+			                value="{0} tweets found, displaying {1} tweet(s), from {2} to {3}. Page {4} / {5}.">
+			            <f:param value="#{rowsCount}"/>
+			            <f:param value="#{displayedRowsCount}"/>
+			            <f:param value="#{firstRowIndex}"/>
+			            <f:param value="#{lastRowIndex}"/>
+			            <f:param value="#{pageIndex}"/>
+			            <f:param value="#{pageCount}"/>
+			        </ice:outputFormat>
+			    </ice:dataPaginator>
+			<ice:panelGroup >    
+		    	<ice:commandButton value="Add a New Tweet" actionListener="#{tweetBean.createNewTweet}" />
+		    </ice:panelGroup>
+		    	                    
+        <ice:dataTable frame="box"
+        			   id="tweetViewList"
+                	   columnClasses="idColumn, nameColumn"
+                       rowClasses="oddRow, evenRow"  
+                       styleClass="tableStyle"      
+                       binding="#{tweetBean.tweetDataTable}"			   
+                       var="tweet"
+                       rows="5"
+                       value="#{tweetBean.tweetViewList}" rules="all" width="900px" >
+            <f:facet name="header">
+                <ice:outputText value="Tweets for campaign #{campaignBean.currentCampaignView.name}"/>
+            </f:facet>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="TweetId Click to edit"/>
+                </f:facet>
+                <ice:commandLink 
+                	value=" #{tweet.id} "
+                    id="tweetId"
+                    actionListener="#{tweetBean.setSelectedTweet}"
+                    title="Click for working on this tweet"
+                    partialSubmit="true"
+                	>
+                </ice:commandLink>                
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="From"/>
+                </f:facet>
+                <ice:outputText value="#{tweet.fromUser}"/>
+
+            </ice:column>            
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Description"/>
+                </f:facet>
+                <ice:outputText value="#{tweet.description}"/>               
+            </ice:column>
+            
+            <!-- 
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Delete"/>
+                </f:facet>
+            <ice:selectBooleanCheckbox id="someId" required="false" immediate="false" 
+                  valueChangeListener="#{tweetBean.processDeleteRequest}"                             
+				  value="#{tweetBean.deleteCheckboxStates}"
+                                   autocomplete="off"/> 
+            </ice:column> 
+             -->            
+         </ice:dataTable> 
+         </ice:panelGroup>
+         					
+					
+					
+					
+					</ice:panelGroup>
+					</ice:panelTab>
+					
+					
+					
+			<!-- ==================== -->		   
+			<!--    Scheduler tab     -->		   
+			<!-- ==================== -->					
+					
+					<ice:panelTab id="tabSchedulers" label="Schedule Jobs" rendered="true">
+					<ice:panelGroup style="padding:6px;"  >
+					
+					
+					
+				<ice:panelGroup>
+                <!-- Paginator with page controls -->
+                <ice:dataPaginator id="dataScroll5"
+                                   for="ndJobDetailViewList"
+                                   paginator="true"
+                                   fastStep="3"
+                                   paginatorMaxPages="20">
+                    <f:facet name="first">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-first.gif"
+                            style="border:none;"
+                            title="First Page"/>
+                    </f:facet>
+                    <f:facet name="last">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-last.gif"
+                            style="border:none;"
+                            title="Last Page"/>
+                    </f:facet>
+                    <f:facet name="previous">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-previous.gif"
+                            style="border:none;"
+                            title="Previous Page"/>
+                    </f:facet>
+                    <f:facet name="next">
+                        <ice:graphicImage
+                            url="../xmlhttp/css/xp/css-images/arrow-next.gif"
+                            style="border:none;"
+                            title="Next Page"/>
+                    </f:facet>
+                    <f:facet name="fastforward">
+                        <ice:graphicImage url="../xmlhttp/css/xp/css-images/arrow-ff.gif"
+                                          style="border:none;"
+                                          title="Fast Forward"/>
+                    </f:facet>
+                    <f:facet name="fastrewind">
+                        <ice:graphicImage url="../xmlhttp/css/xp/css-images/arrow-fr.gif"
+                                          style="border:none;"
+                                          title="Fast Backwards"/>
+                    </f:facet>
+                </ice:dataPaginator>
+                
+                
+			    <ice:dataPaginator id="dataScroll6"  for="ndJobDetailViewList"
+			            rowsCountVar="rowsCount"
+			            displayedRowsCountVar="displayedRowsCount"
+			            firstRowIndexVar="firstRowIndex"
+			            lastRowIndexVar="lastRowIndex"
+			            pageCountVar="pageCount"
+			            pageIndexVar="pageIndex">
+			        <ice:outputFormat
+			                styleClass="standard"
+			                value="{0} jobs found, displaying {1} job(s), from {2} to {3}. Page {4} / {5}.">
+			            <f:param value="#{rowsCount}"/>
+			            <f:param value="#{displayedRowsCount}"/>
+			            <f:param value="#{firstRowIndex}"/>
+			            <f:param value="#{lastRowIndex}"/>
+			            <f:param value="#{pageIndex}"/>
+			            <f:param value="#{pageCount}"/>
+			        </ice:outputFormat>
+			    </ice:dataPaginator>
+
+		    	                    
+        <ice:dataTable frame="box"
+        			   id="ndJobDetailViewList"
+                	   columnClasses="idColumn, nameColumn"
+                       rowClasses="oddRow, evenRow"  
+                       styleClass="tableStyle"      
+                       binding="#{schedulerBean.jobDataTable}"			   
+                       var="job"
+                       rows="5"
+                       value="#{schedulerBean.ndJobDetailViewList}" rules="all" width="900px" >
+            <f:facet name="header">
+                <ice:outputText value="Jobs for user #{schedulerBean.currentUser}"/>
+            </f:facet>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Click to edit"/>
+                </f:facet>
+                <ice:commandLink 
+                	value=" #{job.id} "
+                    id="jobId"
+                    actionListener="#{schedulerBean.setSelectedJob}"
+                    title="Click for working on this Job"
+                    partialSubmit="true"
+                	>
+                </ice:commandLink>                
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Campaign"/>
+                </f:facet>
+                <ice:outputText value="#{job.campaignName}"/>
+
+            </ice:column>             
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Job Name"/>
+                </f:facet>
+                <ice:outputText value="#{job.name}"/>
+
+            </ice:column>            
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Job Group"/>
+                </f:facet>
+                <ice:outputText value="#{job.group}"/>               
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Prev Run"/>
+                </f:facet>
+                <ice:outputText value="#{job.prevRunTimeString}"/>               
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Next Run"/>
+                </f:facet>
+                <ice:outputText value="#{job.nextRunTimeString}"/>               
+            </ice:column>
+            <!-- 
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="Delete"/>
+                </f:facet>
+            <ice:selectBooleanCheckbox id="someId" required="false" immediate="false" 
+                  valueChangeListener="#{tweetBean.processDeleteRequest}"                             
+				  value="#{tweetBean.deleteCheckboxStates}"
+                                   autocomplete="off"/> 
+            </ice:column> 
+             -->            
+         </ice:dataTable> 
+         </ice:panelGroup>
+         					
+					
+					
+					
+					</ice:panelGroup>
+					</ice:panelTab>			
+					
+					
+					
+					
+					
+					
+				</ice:panelTabSet>
+					   </f:facet>
+					   
+					   
+			<!-- ==================== -->		   
+			<!--    Lower panel  -->		   
+			<!-- ==================== -->
+			
+					   <f:facet name="second">
+					   
+					   
+					<ice:panelGroup  style="padding:6px;" >
+							<ice:panelGroup id="campaignDetailPanel" rendered="#{campaignBean.renderDetailsPanel}">
+							<ice:panelGrid columns="1"  >
+							    <ice:panelGrid columns="4"  >
+									<ice:outputText value="#{campaignBean.currentCampaignView.id} - #{campaignBean.currentCampaignView.name}" />
+									<ice:commandButton value="Save" actionListener="#{campaignBean.processCampaign}" />
+									
+									<ice:outputText value="Careful with the delete... no prompt implemented yet..." />
+									<ice:commandButton value="Delete Campaign and Related Tweets" actionListener="#{campaignBean.deleteCampaignAndRelatedTweets}" />
+								</ice:panelGrid>
+								
+								<ice:panelGrid columns="2"  >
+									<ice:outputText value="Name:" />
+									<ice:inputText value="#{campaignBean.currentCampaignView.name}" />
+								</ice:panelGrid>
+								
+								<ice:panelGrid columns="2"  >
+									<ice:outputText value="TwitterId (who this campaign will be run as):" />
+									<ice:inputText value="#{campaignBean.currentCampaignView.sourceTwitterId}" />
+								</ice:panelGrid>
+								
+								<ice:panelGrid columns="2"  >								
+									<ice:outputText value="Password:" />
+									<ice:inputText value="#{campaignBean.currentCampaignView.sourceTwitterIdPassword}" />
+								</ice:panelGrid>
+														
+							<ice:outputText value="First look for all tweets with these keywords:" style="color: blue"/>							
+							<ice:panelGroup id="tweetKeywordSelectorPanel" style="padding:6px;border:1px solid blue">		
+								<ice:panelGrid columns="1"  >																
+									<ice:outputText value="Find tweets in which the following is being talked about  (Use phrases if you like, including commas):" />
+									<ice:inputText  size="100" value="#{campaignBean.currentCampaignView.tweetKeywords}" />		
+								</ice:panelGrid>																
+							</ice:panelGroup>
+							
+							<ice:outputText value=" " /><ice:outputText value=" " /><ice:outputText value=" " />
+							<ice:outputText value="Then look for twitterers with the following words in their profile:" style="color: green"/>																
+							<ice:panelGroup id="profileKeyWordSelectorPanel" style="padding:6px;border:1px solid green">
+							<ice:panelGrid columns="1"  >																
+								<ice:outputText value="Keywords (comma delimited) to look for in the profile:" />
+								<ice:inputText  size="100" value="#{campaignBean.currentCampaignView.profileKeywords}" />
+							</ice:panelGrid>
+							<ice:panelGrid columns="2"  >
+								<ice:outputText value="Select the kind of match to perform:" />
+								<ice:selectOneRadio 
+							                     value="#{campaignBean.currentCampaignView.checkAllProfileKeywords}">
+							     <f:selectItem 
+							                   itemLabel="Match all"
+							                   itemValue="true"/>
+							     <f:selectItem 
+							                   itemLabel="Match any"
+							                   itemValue="false"/>
+						                   
+							 </ice:selectOneRadio>
+							</ice:panelGrid>
+							</ice:panelGroup>
+							
+							<ice:outputText value=" " /><ice:outputText value=" " /><ice:outputText value=" " />
+							<ice:outputText value="Optionally exclude twitterers with the following words in their profile:" style="color: red"/>																
+							<ice:panelGroup id="excludeProfileKeyWordSelectorPanel" style="padding:6px;border:1px solid red">
+							<ice:panelGrid columns="1"  >																
+								<ice:outputText value="If ANY of the following keywords(comma delimited), exist in profile, then exclude the twitterer:" />
+								<ice:inputText size="100" value="#{campaignBean.currentCampaignView.excludeProfileKeywords}" />
+							</ice:panelGrid>
+							</ice:panelGroup>							
+							
+	
+								
+							</ice:panelGrid>
+						</ice:panelGroup>
+
+					   
+						<ice:panelGroup id="tweetDetailPanel"  rendered="#{tweetBean.renderDetailsPanel}">
+							<ice:outputText value="Details for #{tweetBean.currentTweetView.id}" />	
+							<ice:panelGroup>
+							<ice:panelGrid columns="2"  >
+								<ice:outputText value="#{tweetBean.currentTweetView.id}" />
+								<ice:panelGrid columns="2"  >
+									<ice:commandButton value="Save" actionListener="#{tweetBean.processTweet}" />
+									<ice:commandButton value="Delete" actionListener="#{tweetBean.deleteTweet}" />
+								</ice:panelGrid>
+								
+								<ice:outputText value="From User:" />
+								<ice:inputText value="#{tweetBean.currentTweetView.fromUser}" />
+								
+								<ice:outputText value="Description:" />
+								<ice:inputText value="#{tweetBean.currentTweetView.description}" />
+								
+								
+							</ice:panelGrid>
+							</ice:panelGroup>
+											
+						</ice:panelGroup>
+						
+						
+						<ice:panelGroup id="schedulerDetailPanel"  rendered="#{schedulerBean.renderDetailsPanel}">
+							<ice:outputText value="Details for Job name:#{schedulerBean.currentNDJobDetailView.name} and group:#{schedulerBean.currentNDJobDetailView.group } of campaign #{schedulerBean.currentNDJobDetailView.campaignName} (id:#{schedulerBean.currentNDJobDetailView.id}) " />	
+							<ice:panelGroup>
+							<ice:panelGrid columns="2"  >
+								
+								<ice:outputText value="Job Name:" />
+								<ice:inputText value="#{schedulerBean.currentNDJobDetailView.name}" />
+								
+								<ice:outputText value="Job Group:" />
+								<ice:inputText value="#{schedulerBean.currentNDJobDetailView.group}" />
+								
+								<ice:outputText value="Previous Run:" />
+								<ice:inputText value="#{schedulerBean.currentNDJobDetailView.prevRunTimeString}" />
+
+								<ice:outputText value="Next Run:" />
+								<ice:inputText value="#{schedulerBean.currentNDJobDetailView.nextRunTimeString}" />																
+
+								<ice:outputText value="Schedule Job:" />
+								<ice:selectOneMenu valueChangeListener="#{schedulerBean.setTrigger}" partialSubmit="true">
+									<f:selectItems value="#{schedulerBean.triggerList}" /> 
+								</ice:selectOneMenu>
+																								
+								<ice:panelGroup>
+								<ice:panelGrid columns="2"  >
+									<ice:commandButton value="Schedule" actionListener="#{schedulerBean.scheduleJob}" />
+									<ice:commandButton value="Stop" actionListener="#{schedulerBean.stopJob}" />
+								</ice:panelGrid>
+								</ice:panelGroup>
+								
+							</ice:panelGrid>
+							</ice:panelGroup>
+											
+						</ice:panelGroup>						
+						
+						</ice:panelGroup>
+						
+					   </f:facet>
+					</ice:panelDivider>	
+				</ice:panelGrid>			
+				</f:facet>
+			<!-- 
+				<f:facet name="south">
+					<ice:outputText value="South"/>
+				</f:facet>
+			-->
+		</ice:panelBorder>
+
+
+
+
+
+
+
+                
+			</ice:form>     
+ 
+		</body>
+ 
+	</html>
+ 
+</f:view>
+ 

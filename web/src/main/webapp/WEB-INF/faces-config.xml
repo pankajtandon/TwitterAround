@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+
+<faces-config xmlns="http://java.sun.com/JSF/Configuration">
+
+    <application>
+        <variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+    </application>
+    
+   <managed-bean>
+        <managed-bean-name>loginBean</managed-bean-name>
+        <managed-bean-class>com.nayidisha.twitter.faces.LoginBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>      
+	    
+	<managed-bean>
+		<managed-bean-name>renderManager</managed-bean-name>
+		<managed-bean-class>com.icesoft.faces.async.render.RenderManager</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+
+
+
+    <managed-bean>
+        <managed-bean-name>twitterBean</managed-bean-name>
+        <managed-bean-class>com.nayidisha.twitter.faces.TwitterBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>twitterService</property-name>
+			<value>#{twitterService}</value>
+		</managed-property>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>campaignBean</managed-bean-name>
+        <managed-bean-class>com.nayidisha.twitter.faces.CampaignBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>campaignService</property-name>
+			<value>#{campaignService}</value>
+		</managed-property>
+    </managed-bean>   
+    
+    <managed-bean>
+        <managed-bean-name>tweetBean</managed-bean-name>
+        <managed-bean-class>com.nayidisha.twitter.faces.TweetBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>campaignService</property-name>
+			<value>#{campaignService}</value>
+		</managed-property>
+    </managed-bean>  
+    
+   <managed-bean>
+        <managed-bean-name>schedulerBean</managed-bean-name>
+        <managed-bean-class>com.nayidisha.twitter.faces.SchedulerBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>schedulerService</property-name>
+			<value>#{schedulerService}</value>
+		</managed-property>
+    </managed-bean>   
+ 
+ 
+     <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/login.jspx</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
+	<!--
+	    
+	 <navigation-rule>
+	 	<navigation-case>
+	 		<from-outcome>retrictedArea</from-outcome>
+	 		<to-view-id>/twitter.jspx</to-view-id>
+	 	</navigation-case>
+	 </navigation-rule>
+	
+	-->
+
+</faces-config>

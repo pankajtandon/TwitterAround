@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nayidisha.twitter.domain.TwitterUser" table="twitter_user">
+	    <composite-id>
+			<key-property name="twitterId" column="twitter_id" />
+			<key-property name="campaignId" column="campaign_id" />
+		</composite-id>
+		<property name="capturedOn"  column="captured_on"/>
+		<property name="profileDescription" column="profile_description"/> 
+		<property name="acquireCount" column="acquire_count"/> 
+		<property name="friendsCount" column="friends_count"/>
+		<property name="followersCount" column="followers_count"/>
+		<property name="twitteringSince" column="twittering_since"/>
+		<property name="weight" column="weight"/>
+		<property name="onHold" column="on_hold"/>
+		<property name="lastSent" column="last_sent"/>
+		
+		<property name="createdDate" type="timestamp" column="created_date"/>
+		<property name="updatedDate" type="timestamp" column="updated_date"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="updatedBy" type="string" column="updated_by"/> 
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nayidisha.twitter.domain.Campaign" table="campaign">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="name"  column="campaign_name"/>
+		<property name="sourceTwitterId" column="source_twitter_id"/>
+		<!--<property name="sourceTwitterIdPassword" column="source_twitter_id_password"/>
+		--><property name="enabled" type="boolean" column="enabled"/>
+		<property name="profileKeywords"  column="profile_keywords"/>
+		<property name="checkAllProfileKeywords"  type="boolean" column="check_all_profile_keywords"/>	
+		
+		<property name="excludeProfileKeywords"  column="exclude_profile_keywords"/>
+			
+		<property name="tweetKeywords"  column="tweet_keywords"/>
+		
+		<property name="createdDate" type="timestamp" column="created_date"/>
+		<property name="updatedDate" type="timestamp" column="updated_date"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="updatedBy" type="string" column="updated_by"/> 	
+		
+		 <many-to-one  name="owner" column="owner" class="com.nayidisha.twitter.domain.TAUser"/>
+		
+		<set name="associatedTweets"  table="tweet_campaign" >
+       		<key column="campaign_id"/>
+       		<many-to-many column="tweet_id" class="com.nayidisha.twitter.domain.TATweet"/>
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,112 @@
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	>
+ 
+	<html>
+ 
+		<head><title>Twitter Around</title>
+		<link href="css/menuStyle.css" rel="stylesheet" type="text/css"/>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css"/>
+        <link href="./css/style.css" rel="stylesheet" type="text/css"/>		
+        <link href="css/effects.css" rel="stylesheet" type="text/css" />
+        <script language="javascript">
+		function changeLinkColor(color, id) { 
+	    	if (!document.getElementById(id)) {
+	        	if (id) {
+	           		id.style.color = color;
+	        	}
+	    	} else {
+	     		document.getElementById(id).style.color = color;
+	     	}
+	     	return true;
+		}        
+		</script>
+		
+		</head>
+ 
+		<body>
+ 
+			 
+			<ice:form partialSubmit="true">
+				
+
+				<ice:panelBorder rendered="true" width="800px;" style="padding: 0px; margin: 0px" bgcolor="#FFFFFF">
+
+				<f:facet name="north" style="padding: 0px; margin: 0px">
+					<b><ice:outputText value="Twitter Around Application " onmouseovereffect="#{twitterBean.funEffect}"/></b>
+				</f:facet >			
+				<f:facet name="center">
+				<ice:panelGrid columns="1"  >
+
+						<ice:panelGroup style="padding:6px;" >
+						
+
+ 
+ 
+							        <ice:panelGroup style="border: 1px solid gray; ">
+									        	<ice:panelGroup style="border: 0px; height: 50px;">
+									         		<ice:outputLabel value="Enter user id of the Twitter User (for example: nayidisha)" />
+									         		<ice:inputText rows="1" width="300"  value="#{twitterBean.twitterUserIdToSearch}"/>
+									         	</ice:panelGroup>	
+
+							        		    <ice:panelGroup style="border: 0px;">
+									         		<ice:graphicImage url="#{twitterBean.imageUrl}" width="200" height="50" />
+									         	</ice:panelGroup>
+									         	
+									         	<ice:panelGroup style="border: 0px; height: 30px;">
+									         		<ice:inputText rows="1" width="300"  value="#{twitterBean.captchaValue}"/>
+									        	</ice:panelGroup>
+									        	
+									        	<ice:panelGroup style="border: 0px; height: 30px;">
+									        		<ice:outputLabel value="Enter the numbers/letters in the image, in the box above and press 'Submit'" />
+									        	</ice:panelGroup>
+									        	<ice:panelGroup style="border: 0px; height: 30px;">
+									        		<ice:outputLabel value="Can't read the letters?" />
+									        		<ice:commandLink partialSubmit="true" style="text-decoration:underline;" value="Get a new Image" actionListener="#{twitterBean.refreshCaptcha}"/>
+									        	</ice:panelGroup>									        										         	
+
+									        	<ice:panelGroup style="border: 0px; height: 30px;">
+									        		<ice:commandButton value="Submit" actionListener="#{twitterBean.processEnteredValue}" />
+									        	</ice:panelGroup>									         
+									        	<ice:panelGroup style="height: 50px;" effect="#{twitterBean.highlightEffect}">
+									         		<ice:outputLabel value="#{twitterBean.result}" />
+									        	</ice:panelGroup>
+									</ice:panelGroup>									        										         						                
+
+ 
+                
+
+			    						
+						
+						
+						</ice:panelGroup>
+						
+						<ice:panelGroup style="padding:6px;" >
+							<ice:commandButton value="Registered Users" action="#{twitterBean.restrictedArea}" />
+						</ice:panelGroup>
+
+				</ice:panelGrid>			
+				</f:facet>
+			<!-- 
+				<f:facet name="south">
+					<ice:outputText value="South"/>
+				</f:facet>
+			-->
+		</ice:panelBorder>
+
+
+
+
+
+
+
+                
+			</ice:form>     
+ 
+		</body>
+ 
+	</html>
+ 
+</f:view>
+ 

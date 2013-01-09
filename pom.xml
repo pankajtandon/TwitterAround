@@ -1,0 +1,345 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.nayidisha.twitter</groupId>
+  <artifactId>TwitterAround</artifactId>
+  <packaging>pom</packaging>
+  <version>1.2.0</version>
+  <name>TwitterAround</name>
+  <url>http://maven.apache.org</url>
+  
+  <properties>
+     <ta-version>1.2.0</ta-version>
+     <spring-version>3.0.4.RELEASE</spring-version>
+     <spring-security-version>3.0.4.RELEASE</spring-security-version>
+     <hibernate-version>3.2.5.ga</hibernate-version>
+     <skipTests>false</skipTests>
+  </properties>
+  
+  <modules>
+    <module>common</module>
+    <module>dataaccess</module>
+    <module>service</module>
+    <module>web</module>
+  </modules>
+  <build>
+    <finalName>twitterAround</finalName>
+	<plugins>
+	<plugin>
+	<artifactId>maven-compiler-plugin</artifactId>
+	<version>2.0.2</version>
+		<configuration>
+		<source>1.5</source>
+		<target>1.5</target>
+		</configuration>
+	</plugin>
+
+	
+	</plugins>
+  </build>
+
+	<scm>
+    	<connection>scm:svn:file:///E:/pankajsPCDir/nayidishaSVNRepo/TwitterAround</connection>
+    	<url>file:///E:/pankajsPCDir/nayidishaSVNRepo/TwitterAround</url>
+    	<developerConnection>scm:svn:file:///E:/pankajsPCDir/nayidishaSVNRepo/TwitterAround</developerConnection>
+	</scm>
+	
+<dependencyManagement>
+  <dependencies>
+      
+	<dependency>
+	  <groupId>commons-lang</groupId>
+	  <artifactId>commons-lang</artifactId>
+	  <version>2.4</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>opensymphony</groupId>
+	  <artifactId>quartz-all</artifactId>
+	  <version>1.6.3</version>
+	</dependency>
+	
+    <dependency>
+	  <groupId>log4j</groupId>
+	  <artifactId>log4j</artifactId>
+	  <version>1.2.9</version>
+	</dependency>
+	
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+    </dependency>	
+	      
+    <dependency>
+		<groupId>org.twitter4j</groupId>
+		<artifactId>twitter4j-core</artifactId>
+		<version>2.1.9</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>javax.servlet</groupId>
+	  <artifactId>servlet-api</artifactId>
+	  <version>2.4</version>
+	  <scope>provided</scope>
+	</dependency>
+
+	
+	<dependency>
+		<groupId>commons-beanutils</groupId>
+		<artifactId>commons-beanutils</artifactId>
+		<version>1.6</version>
+	</dependency>
+  
+		<!--  Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		
+
+    		
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-context-support</artifactId>
+		  <version>${spring-version}</version>
+		</dependency>	
+				
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring-version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		
+	   <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-jdbc</artifactId>
+	      <version>${spring-version}</version>
+	    </dependency>
+		
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-hibernate3</artifactId>
+	      <version>2.0.8</version>
+	    </dependency>
+	    
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-orm</artifactId>
+		  <version>${spring-version}</version>
+		</dependency>	
+		
+	    <dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-aop</artifactId>
+	        <version>${spring-version}</version>	      
+	    </dependency>		
+		
+
+		
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-test</artifactId>
+	      <version>${spring-version}</version>
+	    </dependency>
+	    
+	    
+		<!-- CGLIB (required for processing @Configuration classes -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.1_3</version>
+		</dependency>
+		
+		
+		<!--  Spring security -->
+		
+	    <dependency>
+	      <groupId>org.springframework.security</groupId>
+	      <artifactId>spring-security-core</artifactId>
+	      <version>${spring-security-version}</version>
+	    </dependency>
+	       
+		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-config</artifactId>
+		    <version>${spring-security-version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-web</artifactId>
+		    <version>${spring-security-version}</version>
+		</dependency>
+
+
+		
+	<dependency>
+	  <groupId>org.hibernate</groupId>
+	  <artifactId>hibernate</artifactId>
+	  <version>${hibernate-version}</version>
+	</dependency>
+
+
+
+	
+    <dependency>  
+	    <groupId>jstl</groupId>  
+	    <artifactId>jstl</artifactId>  
+	     <version>1.1.2</version>  
+	</dependency>
+	<dependency>
+	  <groupId>taglibs</groupId>
+	  <artifactId>standard</artifactId>
+	  <version>1.1.2</version>
+	</dependency>
+
+
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-log4j12</artifactId>
+	    <version>1.4.2</version>
+	</dependency>
+
+
+	<dependency>
+	    <groupId>jta</groupId>
+	    <artifactId>jta</artifactId>
+	    <version>1.0.1b</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>c3p0</groupId>
+	  <artifactId>c3p0</artifactId>
+	  <version>0.9.1.2</version>
+	</dependency>
+		
+	<dependency>
+	  <groupId>commons-dbcp</groupId>
+	  <artifactId>commons-dbcp</artifactId>
+	  <version>1.2.2</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>commons-pool</groupId>
+	  <artifactId>commons-pool</artifactId>
+	  <version>1.4</version>
+	</dependency>
+			
+	<dependency>		
+      <groupId>org.icefaces</groupId>
+	  <artifactId>icefaces</artifactId>
+	  <version>1.8.2</version>
+	  <exclusions>
+	    <exclusion>
+		      <groupId>javax.el</groupId>
+		      <artifactId>el-api</artifactId>
+	    </exclusion>
+	  </exclusions>
+	</dependency>
+	<dependency>
+	  <groupId>org.icefaces</groupId>
+	  <artifactId>icefaces-comps</artifactId>
+	  <version>1.8.2</version>
+	</dependency>
+
+	<dependency>
+	  <groupId>javax.faces</groupId>
+	  <artifactId>jsf-impl</artifactId>
+	  <version>1.2_13</version>
+	</dependency>
+	   
+	<dependency>
+	  <groupId>javax.faces</groupId>
+	  <artifactId>jsf-api</artifactId>
+	  <version>1.2_13</version>
+	</dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-driver</artifactId>
+      <version>5.1.13</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>captcha</groupId>
+      <artifactId>SimpleCaptcha</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
+
+
+   <profiles>
+    <profile>
+    <id>DEV</id>
+
+    <properties>
+	    <db.connection.url>jdbc:mysql://localhost:3306/twdev</db.connection.url>
+		<db.user>twuser</db.user>
+		<db.password>password</db.password>
+		<httpProxy>10.98.20.23xxx</httpProxy>
+		<httpProxyPort>8080</httpProxyPort>
+		<serviceLog>C:\\home\\pankajta\\tomcat\\logs\\twitterAroundService.log</serviceLog>
+		<webLog>C:\\home\\pankajta\\tomcat\\logs\\twitterAroundWeb.log</webLog>
+    </properties>
+    </profile>
+
+
+    <profile>
+    <id>DAY</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+    </activation>  
+    <properties>
+	    <db.connection.url>jdbc:mysql://localhost:3306/tw</db.connection.url>
+		<db.user>twuser</db.user>
+		<db.password>password</db.password><!--
+		<httpProxy>10.98.20.23</httpProxy>
+		<httpProxyPort>8080</httpProxyPort>
+		--><serviceLog>C:\\pankaj\\logs\\twitterAroundService.log</serviceLog>
+		<webLog>C:\\pankaj\\logs\\twitterAroundWeb.log</webLog>
+    </properties>
+    </profile>
+    
+    
+    <profile>
+    <id>PRD</id>
+    <properties>
+	    <db.connection.url>jdbc:mysql://localhost/pankajta_twprdxxx</db.connection.url>
+		<db.user>pankajta_twuser</db.user>
+		<db.password>twpass123xxx</db.password>
+		<httpProxy />
+		<httpProxyPort />
+		<serviceLog>/home/pankajta/tomcat/logs/twitterAroundService.log</serviceLog>
+		<webLog>/home/pankajta/tomcat/logs/twitterAroundWeb.log</webLog>
+    </properties>
+    </profile>
+    
+    <!--  The mvn release plugin runs in  a forked lifecycle so it does not inherit system properties :( -->
+    <!-- Using workaround for this problem by creating a profile -->
+    <profile>
+    <id>RELEASE</id>
+    <properties>
+	    <skipTests>true</skipTests>
+    </properties>
+    </profile>    
+
+  </profiles>
+    
+</project>

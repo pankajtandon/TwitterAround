@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<f:view xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+    <html>
+    <head>
+        <title>Twitter Security Login</title>
+    </head>
+    <body>
+    <ice:form partialSubmit="false">
+        <ice:panelGrid columns="2">
+            <ice:outputLabel value="User Name" for="j_username"/>
+            <ice:inputText id="j_username"
+                           value="#{loginBean.userId}" size="40"
+                           maxlength="80"/>
+            <ice:outputLabel value="Password" for="j_password"/>
+            <ice:inputSecret id="j_password"
+                             value="#{loginBean.password}" size="40"
+                             maxlength="80"/>
+        </ice:panelGrid>
+        <ice:commandButton actionListener="#{loginBean.login}" value="Login"/>
+        <ice:messages rendered="true" style="color: red;"/>
+    </ice:form>
+    </body>
+    </html>
+</f:view>
